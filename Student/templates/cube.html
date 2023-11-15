@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cube Layering</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: black; /* Set a dark background */
+        }
+
+        canvas {
+            display: block;
+        }
+        #controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7); /* Transparent dark background */
+            padding: 10px;
+            border-radius: 5px;
+            color: white; /* White text */
+        }
+        #controls h2 {
+            color: white; /* White headers */
+        }
+
+        #controls label {
+            display: block;
+            margin-top: 10px;
+        }
+        #controls input,
+        #controls select {
+            background: rgba(255, 255, 255, 0.3); /* Semi-transparent white background */
+            border: none;
+            color: white;
+        }
+        #expandButton {
+            position: absolute;
+            top:0px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 120%;
+            cursor: pointer;
+            color: white;
+            font-size: 25px;
+        }
+        .menu-links {
+            list-style: none; /* Remove list-style marker */
+            padding: 0; /* Remove any default padding */
+            margin: 0; /* Remove any default margin */
+        }
+        .menu-links .nav-link {
+            margin: 20px 0; /* Add some margin to the top and bottom to lower the button */
+        }
+        /* Remove the underline and change the color of the "Dashboard" button */
+        .menu-links .nav-link a {
+            text-decoration: none;
+            color: white; /* Change text color to white */
+            padding: 5px 10px; /* Add padding to make it a button */
+            border-radius: 5px; /* Add rounded corners */
+            border: 1px solid white;
+            display: inline-block;
+            transition: background 0.3s, color 0.3s; /* Add transition for a smooth effect */
+            background: black; /* Set initial background color to black */
+        }
+        /* Add hover effect */
+        .menu-links .nav-link a:hover {
+            background: #695cfe; /* Change background color on hover */
+            color: #fff; /* Change text color on hover */
+        }
+        /* Add reset button for tilt */
+        #resetCubeButton {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid white;
+            cursor: pointer;
+            color: white;
+            font-size: 12px;
+            transition: background 0.3s, color 0.3s; /* Add transition for smooth effect */
+        }
+
+    #resetCubeButton:hover {
+        background: #444; /* Change background color on hover */
+        color: #fff; /* Change text color on hover */
+        border: 2px solid white;
+    }
+
+    </style>
+    <!-- boxicons CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+</head>
+<body>
+    <canvas id="cubeCanvas"></canvas>
+    <div id="controls" style="display: block;">
+        <h2>Position Controls</h2>
+        <label for="positionX">X-Axis Position:</label>
+        <input type="range" id="positionX" min="-400" max="400" step="1" value="0">
+        <br>
+        <label for "positionY">Y-Axis Position:</label>
+        <input type="range" id="positionY" min="-400" max="400" step="1" value="0">
+        <h2>Rotation Speed</h2>
+        <label for="speedX">X-Axis:</label>
+        <input type="range" id="speedX" min="0" max="1" step="0.01" value="0.00">
+        <br>
+        <label for="speedY">Y-Axis:</label>
+        <input type="range" id="speedY" min="0" max="1" step="0.01" value="0.00">
+        <br>
+        <label for="speedZ">Z-Axis:</label>
+        <input type="range" id="speedZ" min="0" max="1" step="0.01" value="0.00">
+        <br>
+        <label for="layerCount">Number of Layers:</label>
+        <input type="number" id="layerCount" min="1" max="50" step="1" value="1">
+        <h2>Shape Color</h2>
+        <label for="shapeColor">Choose Color:</label>
+        <select id="shapeColor" style="background: black; color: white;">
+            <option value="white">White</option>
+            <option value="Grey">Grey</option>
+            <option value="yellow">Yellow</option>
+            <option value="GoldenRod">Gold</option>
+            <option value="orange">Orange</option>
+            <option value="Maroon">Maroon</option>
+            <option value="red">Red</option>
+            <option value="MediumSpringGreen">Spring Green</option>
+            <option value="green">Green</option>
+            <option value="DeepSkyBlue">SkyBlue</option>
+            <option value="blue">Blue</option>
+            <option value="purple">Purple</option>
+            <option value="Magenta">Magenta</option>
+            <option value="MATRIX">MATRIX</option>
+        </select>
+        <h2>Shape Size</h2>
+        <label for="baseShapeSize">Base Size:</label>
+        <input type="range" id="baseShapeSize" min="0" max="100" step="1" value="50">
+        <label for="shapeScale">Scale Factor:</label>
+        <input type="range" id="shapeScale" min="0" max="2" step="0.1" value="1">
+        <h2>Edge Thickness</h2>
+        <label for="edgeThickness">Change Thickness:</label>
+        <input type="range" id="edgeThickness" min="1" max="10" step="1" value="1">
+        <h2>Tilt Controls</h2>
+        <label for="tiltAngle">Tilt Angle:</label>
+        <input type="range" id="tiltAngle" min="0" max="180" step="1" value="0">
+        <br>
+        <br>
+        <!-- Reset Cube button -->
+        <button id="resetCubeButton">Reset Cube</button>
+        <!-- Dashboard controls -->
+        <h2> HomePage </h2>
+        <ul class="menu-links">
+            <li class="nav-link">
+                <a href="index.html">
+                    <i class='bx bx-home icon' style="font-size: 20px;"></i>
+                    <span class="text nav-text">Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-link">
+                <a href="calculator.html">
+                    <i class='bx bx-calculator icon' style="font-size: 20px;"></i>
+                    <span class="text nav-text">Calculator</span>
+                </a>
+            </li>
+            <li class="nav-link">
+                <a href="hangman.html">
+                    <i class='bx bx-joystick icon' style="font-size: 20px;"></i>
+                    <span class="text nav-text">Hangman</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div id="expandButton" title="Hide Menu">-</div>
+    <script>
+        // Constants
+        const COLOR_BACKGROUND = "black";
+        const EXPAND_BUTTON = document.getElementById("expandButton");
+        const CONTROLS = document.getElementById("controls");
+
+        // Initial values for various parameters
+        const initialValues = {
+            tiltAngle: 0,
+            speedX: 0.00,
+            speedY: 0.00,
+            speedZ: 0.00,
+            edgeThickness: 1,
+            layerCount: 1,
+            baseShapeSize: 50,
+            shapeScale: 1.0,
+        };
+
+        // Color mapping for predefined colors
+        const colorMap = {
+            white: "white",
+            grey: "grey",
+            yellow: "yellow",
+            gold: "GoldenRod",
+            orange: "orange",
+            maroon: "Maroon",
+            red: "red",
+            springGreen: "MediumSpringGreen",
+            green: "green",
+            skyBlue: "DeepSkyBlue",
+            blue: "blue",
+            purple: "purple",
+            magenta: "Magenta",
+        };
+
+        // Array of colors for the "MATRIX" option
+        const matrixColors = ["red", "green", "blue"];
+
+        // Create a 3D point constructor
+        class Point3D {
+            constructor(x, y, z) {
+                this.x = x;
+                this.y = y;
+                this.z = z;
+            }
+        }
+
+        // Set up the canvas and context
+        const canvas = document.getElementById("cubeCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Set the canvas dimensions
+        function resizeCanvas() {
+            const windowHeight = window.innerHeight;
+            const windowWidth = window.innerWidth;
+            canvas.height = windowHeight;
+            canvas.width = windowWidth;
+        }
+
+        // Resize the canvas when the window size changes
+        window.addEventListener("resize", resizeCanvas);
+
+        // Initial canvas resize
+        resizeCanvas();
+
+        // Get control elements
+        const speedXInput = document.getElementById("speedX");
+        const speedYInput = document.getElementById("speedY");
+        const speedZInput = document.getElementById("speedZ");
+        const shapeColorSelect = document.getElementById("shapeColor");
+        const baseShapeSizeInput = document.getElementById("baseShapeSize");
+        const shapeScaleInput = document.getElementById("shapeScale");
+        const edgeThicknessInput = document.getElementById("edgeThickness");
+        const layerCountInput = document.getElementById("layerCount");
+        const positionXInput = document.getElementById("positionX");
+        const positionYInput = document.getElementById("positionY");
+        const tiltAngleInput = document.getElementById("tiltAngle");
+
+        // Toggle menu visibility
+        let menuVisible = true;
+
+        EXPAND_BUTTON.addEventListener("click", () => {
+            if (menuVisible) {
+                CONTROLS.style.display = "none";
+                EXPAND_BUTTON.innerHTML = "+";
+                EXPAND_BUTTON.title = "Show Menu";
+            } else {
+                CONTROLS.style.display = "block";
+                EXPAND_BUTTON.innerHTML = "-";
+                EXPAND_BUTTON.title = "Hide Menu";
+            }
+            menuVisible = !menuVisible;
+        });
+
+        // Create an array for cube layers
+        const cubeLayers = [];
+
+        // Initialize cube layers
+        function initializeCubeLayers() {
+            const layerCount = parseInt(layerCountInput.value);
+            const baseSize = parseInt(baseShapeSizeInput.value);
+            const scale = parseFloat(shapeScaleInput.value);
+            for (let i = 0; i < layerCount; i++) {
+                const size = baseSize * Math.pow(scale, i);
+                cubeLayers.push({
+                    size: size,
+                    vertices: [
+                        new Point3D(-size, -size, -size),
+                        new Point3D(size, -size, -size),
+                        new Point3D(size, size, -size),
+                        new Point3D(-size, size, -size),
+                        new Point3D(-size, -size, size),
+                        new Point3D(size, -size, size),
+                        new Point3D(size, size, size),
+                        new Point3D(-size, size, size),
+                    ],
+                    edges: [
+                        [0, 1], [1, 2], [2, 3], [3, 0], // back face
+                        [4, 5], [5, 6], [6, 7], [7, 4], // front face
+                        [0, 4], [1, 5], [2, 6], [3, 7], // connecting sides
+                        [0, 1, 5, 4], [2, 3, 7, 6], // top and bottom faces
+                    ],
+                });
+            }
+        }
+
+        initializeCubeLayers();
+
+        // Set up the animation loop
+        let timeDelta, timeLast = 0;
+        let rotationSpeedX = parseFloat(speedXInput.value);
+        let rotationSpeedY = parseFloat(speedYInput.value);
+        let rotationSpeedZ = parseFloat(speedZInput.value);
+        let shapeColor = shapeColorSelect.value;
+        let edgeThickness = parseInt(edgeThicknessInput.value);
+        let tiltAngle = parseFloat(tiltAngleInput.value);
+
+        requestAnimationFrame(animate);
+
+        function animate(timeNow) {
+            // Calculate the time difference
+            timeDelta = timeNow - timeLast;
+            timeLast = timeNow;
+
+            // Clear the canvas on each frame
+            ctx.fillStyle = COLOR_BACKGROUND;
+            ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+
+            // Update rotation speeds
+            rotationSpeedX = parseFloat(speedXInput.value);
+            rotationSpeedY = parseFloat(speedYInput.value);
+            rotationSpeedZ = parseFloat(speedZInput.value);
+            shapeColor = shapeColorSelect.value;
+            edgeThickness = parseInt(edgeThicknessInput.value);
+            tiltAngle = parseFloat(tiltAngleInput.value);
+
+            // Set the edge thickness
+            ctx.lineWidth = edgeThickness;
+
+            // Rotate and draw the cube layers
+            let angleX = timeDelta * 0.001 * rotationSpeedX;
+            let angleY = timeDelta * 0.001 * rotationSpeedY;
+            let angleZ = timeDelta * 0.001 * rotationSpeedZ;
+
+            // Get position values
+            const positionX = parseInt(positionXInput.value);
+            const positionY = parseInt(positionYInput.value);
+
+            const centerX = window.innerWidth / 2 + positionX;
+            const centerY = window.innerHeight / 2 + positionY;
+
+            for (let layerIndex = 0; layerIndex < cubeLayers.length; layerIndex++) {
+                const layer = cubeLayers[layerIndex];
+                const sizeFactor = (layer.size / 100) * (Math.min(window.innerWidth, window.innerHeight) / 200);
+                const layerY = centerY - (layerIndex * 40);
+
+                for (let edge of layer.edges) {
+                    ctx.beginPath();
+                    ctx.moveTo(centerX + layer.vertices[edge[0]].x * sizeFactor, layerY + layer.vertices[edge[0]].y * sizeFactor);
+                    ctx.lineTo(centerX + layer.vertices[edge[1]].x * sizeFactor, layerY + layer.vertices[edge[1]].y * sizeFactor);
+
+                    if (shapeColor === "MATRIX") {
+                        // Set a random color from matrixColors array
+                        ctx.strokeStyle = getMatrixColor();
+                    } else {
+                        ctx.strokeStyle = shapeColor;
+                    }
+
+                    ctx.stroke();
+                }
+
+                // Rotate for the next frame
+                for (let vertex of layer.vertices) {
+                    const x = vertex.x;
+                    const y = vertex.y;
+                    const z = vertex.z;
+
+                    // Rotate around X-axis
+                    const x1 = x * Math.cos(angleX) - z * Math.sin(angleX);
+                    const z1 = x * Math.sin(angleX) + z * Math.cos(angleX);
+
+                    // Rotate around Y-axis
+                    const x2 = x1 * Math.cos(angleY) - y * Math.sin(angleY);
+                    const y2 = x1 * Math.sin(angleY) + y * Math.cos(angleY);
+
+                    // Rotate around Z-axis
+                    vertex.x = x2 * Math.cos(angleZ) - y2 * Math.sin(angleZ);
+                    vertex.y = x2 * Math.sin(angleZ) + y2 * Math.cos(angleZ);
+                    vertex.z = z1;
+                }
+            }
+
+            // Apply the tilt angle
+            if (tiltAngle !== 0) {
+                for (let vertex of cubeLayers[0].vertices) {
+                    const x = vertex.x;
+                    const z = vertex.z;
+
+                    // Rotate around Y-axis (tilt)
+                    const xTilted = x * Math.cos(tiltAngle) - z * Math.sin(tiltAngle);
+                    const zTilted = x * Math.sin(tiltAngle) + z * Math.cos(tiltAngle);
+
+                    vertex.x = xTilted;
+                    vertex.z = zTilted;
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        // Event listeners for input changes
+        speedXInput.addEventListener("input", () => {
+            rotationSpeedX = parseFloat(speedXInput.value);
+        });
+
+        speedYInput.addEventListener("input", () => {
+            rotationSpeedY = parseFloat(speedYInput.value);
+        });
+
+        speedZInput.addEventListener("input", () => {
+            rotationSpeedZ = parseFloat(speedZInput.value);
+        });
+
+        shapeColorSelect.addEventListener("change", () => {
+            if (shapeColorSelect.value === "MATRIX") {
+                shapeColor = getMatrixColor();
+            } else {
+                shapeColor = colorMap[shapeColorSelect.value];
+            }
+        });
+
+        edgeThicknessInput.addEventListener("input", () => {
+            edgeThickness = parseInt(edgeThicknessInput.value);
+            ctx.lineWidth = edgeThickness;
+        });
+
+        layerCountInput.addEventListener("input", () => {
+            // Reinitialize the cube layers when the layer count changes
+            cubeLayers.length = 0; // Clear existing layers
+            initializeCubeLayers();
+        });
+
+        baseShapeSizeInput.addEventListener("input", () => {
+            // Reinitialize the cube layers when the base size changes
+            cubeLayers.length = 0; // Clear existing layers
+            initializeCubeLayers();
+        });
+
+        shapeScaleInput.addEventListener("input", () => {
+            // Reinitialize the cube layers when the scale changes
+            cubeLayers.length = 0; // Clear existing layers
+            initializeCubeLayers();
+        });
+
+        // Event listeners for position changes
+        positionXInput.addEventListener("input", () => {
+            // Redraw the canvas with the new position
+            requestAnimationFrame(animate);
+        });
+
+        positionYInput.addEventListener("input", () => {
+            // Redraw the canvas with the new position
+            requestAnimationFrame(animate);
+        });
+
+        // Event listener for tilt angle changes
+        tiltAngleInput.addEventListener("input", () => {
+            // Redraw the canvas with the new tilt angle
+            requestAnimationFrame(animate);
+        });
+
+        // Event listener for the "Reset Cube" button
+        document.getElementById("resetCubeButton").addEventListener("click", () => {
+            // Reset various parameters to their initial values
+            tiltAngleInput.value = initialValues.tiltAngle;
+            speedXInput.value = initialValues.speedX;
+            speedYInput.value = initialValues.speedY;
+            speedZInput.value = initialValues.speedZ;
+            edgeThicknessInput.value = initialValues.edgeThickness;
+            layerCountInput.value = initialValues.layerCount;
+            baseShapeSizeInput.value = initialValues.baseShapeSize;
+            shapeScaleInput.value = initialValues.shapeScale;
+            positionXInput.value = initialValues.positionX;
+            positionYInput.value = initialValues.positionY;
+
+        // Reinitialize cube layers
+        cubeLayers.length = 0; // Clear existing layers
+           initializeCubeLayers();
+
+        // Reset the shape color to the default value
+        shapeColorSelect.value = "white";
+           shapeColor = colorMap["white"];
+
+        // Redraw the canvas
+        requestAnimationFrame(animate);
+        });
+
+        // Function to get a matrix color
+        function getMatrixColor() {
+            const randomIndex = Math.floor(Math.random() * matrixColors.length);
+            return matrixColors[randomIndex];
+        }
+    </script>
+</body>
+</html>

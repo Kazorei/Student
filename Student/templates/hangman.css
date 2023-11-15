@@ -1,0 +1,234 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap');
+
+/* Global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Creepster', cursive;
+}
+
+/* Body styles */
+body {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #4d525a; /* Graveyard grey background */
+}
+
+/* Container styles */
+.container {
+  width: 75%;
+  height: ;
+  background-color: #e0e0e0;
+  display: flex;
+  gap: 70px;
+  align-items: flex-end;
+  padding: 60px 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Hangman box heading */
+.hangman-box h1 {
+  font-size: 1.45rem;
+  margin-top: 300px;
+  text-align: center;
+  Left: 9px;
+  text-transform: uppercase;
+  color: #000;
+}
+
+/* Word display */
+.word-display {
+  display: flex;
+  gap: 7px;
+  list-style: none;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+}
+
+/* Word display letter */
+.word-display .letter {
+  width: 42px;
+  font-size: 2.8rem;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  border-bottom: 3px solid #000;
+}
+
+/* Word display guessed letter */
+.word-display .letter.guessed {
+  border-color: transparent;
+  margin: -40px 0 35px;
+}
+
+/* Game box heading */
+.game-box h4 {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin-bottom: 15px;
+}
+
+.game-box h4 b {
+  font-weight: 600;
+}
+
+.game-box .guesses-text b {
+  color: #ff0000;
+}
+
+.game-box .keyboard {
+  display: flex;
+  position: relative;
+  width: 120%;
+  top: -200px;
+  gap: 5px;
+  margin-top: 350px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.game-box {
+  position: relative;
+  display: flex;
+  top: 150px;
+  left: -100px;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.keyboard {
+  position: absolute;
+  left: 55%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+/* Buttons */
+:where(.game-modal, .keyboard) button {
+  background: #444;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  border-radius: 100px;
+  text-transform: uppercase;
+}
+
+.keyboard button {
+  padding: 7px;
+  width: calc(100% / 9 - 5px);
+}
+
+.keyboard button[disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Button hover effect */
+:where(.game-modal, .keyboard) button:hover {
+  background: #333;
+}
+
+/* Game modal */
+.game-modal {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  transition: opacity 0.4s ease;
+}
+
+.game-modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.game-modal .content {
+  background: #fff;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.game-modal img {
+  max-width: 130px;
+  margin-bottom: 20px;
+}
+
+.game-modal h4 {
+  font-size: 1.53rem;
+}
+
+.game-modal p {
+  font-size: 1.15rem;
+  margin: 15px 0 30px;
+  font-weight: 500;
+}
+
+.game-modal p b {
+  color: #000;
+  font-weight: 600;
+}
+
+.game-modal button {
+  padding: 12px 23px;
+}
+
+@media (max-width: 782px) {
+  .container {
+    align-items: center;
+    padding: 30px 15px;
+    flex-direction: column;
+  }
+
+.hint-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+#hintButton {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.hint-content {
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 5px;
+    padding: 15px;
+    z-index: 1;
+}
+
+.hint-content.show {
+    display: block;
+}

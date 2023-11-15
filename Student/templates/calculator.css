@@ -1,0 +1,148 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+/* Style the body */
+body {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1a1a1a;
+}
+
+/* Style the calculator container */
+.calculator {
+    position: relative;
+    border: 1px solid #333;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0px 3px 16px rgba(113, 115, 119, 0.5);
+    background: linear-gradient(to bottom, #2c2c2c, #242424);
+}
+
+.symbol-button {
+    font-size: 1em;
+}
+
+.symbol-button-small {
+    font-size: 17px;
+}
+
+/* Style the input field */
+input {
+    width: 320px;
+    border: none;
+    outline: none;
+    padding: 21px;
+    margin: 10px;
+    background: #333;
+    box-shadow: inset 15px 20px 15px rgba(0, 0, 0, 0.08),
+                10px 15px 20px rgba(0, 0, 0, 0.08),
+                10px 15px 20px rgba(0, 0, 0, 0.08),
+                inset -20px -20px 15px rgba(50, 50, 50, 0.9);
+    font-size: 40px;
+    text-align: right;
+    color: #fff;
+}
+
+/* Style the input placeholder text */
+input::placeholder {
+    color: #dbd8d8;
+}
+
+/* Style the calculator buttons */
+button {
+    border: none;
+    width: 60px;
+    height: 55px;
+    margin: 10px;
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #444, #333);
+    color: #fff; /* White text */
+    cursor: pointer;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Style the active button with a slightly different color */
+.active {
+    background: linear-gradient(to bottom, #555, #444);
+}
+
+/* Style the equal button with a distinctive color */
+.equal {
+    background-color: #e91e63;
+}
+
+/* Style the delete button with a danger color */
+.del {
+    background-color: #f44336;
+}
+
+      /* Navbar at the header */
+      .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background-color: #333;
+        color: #fff;
+        padding: 15px;
+        text-align: right;
+        z-index: 999;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .navbar ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .navbar ul li {
+        display: inline-block;
+        margin-right: 25px;
+        position: relative;
+    }
+
+    .navbar ul li a {
+        text-decoration: none;
+        color: #fff;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #444;
+        min-width: 100px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        top: 100%;
+        left: -50px;
+        border-top: 2px solid #000;
+    }
+
+    .navbar ul li:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown-content a {
+        color: #fff;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        border-bottom: 1px solid #000;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #555;
+    }
+
+    /* Calculator styles */
+    .calculator {
+        padding-top: 80px;
+    }

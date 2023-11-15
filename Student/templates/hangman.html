@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman Game</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="hangman.css">
+    <!-- JavaScript -->
+    <script src="word-list.js" defer></script>
+    <script src="hangman.js" defer></script>
+    <!-- boxicons CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <style>
+        /* Common Styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        /* Game Styles */
+        .container {
+            display: flex;
+            max-width: 80%;
+        }
+
+        .menu-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .hangman-box {
+            flex: 1;
+            text-align: center;
+        }
+
+        .game-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .dropdown {
+            position: fixed;
+            top: 50px;
+            right: 10px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 4px;
+            right: 100%; /* Adjust distance from the button */
+            top: 0;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        #expandButton {
+            background: #222;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        /* CSS for the overlay and game description modal */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+}
+
+.game-description {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 80%;
+    text-align: left;
+}
+
+.close {
+    cursor: pointer;
+}
+    </style>
+</head>
+
+<body>
+    <!-- Game Over Modal -->
+    <div class="game-modal">
+        <div class="content">
+            <img src="lost.gif" alt="gif">
+            <h4>Game Over!</h4>
+            <p>The correct word was: <b>rainbow</b></p>
+            <button class="play-again">Play Again</button>
+        </div>
+    </div>
+    <!-- Main Game Container -->
+    <div class="container">
+        <div class="hangman-box">
+            <img src="hangman-0.svg" alt="Hangman Image" draggable="false">
+            <h1></h1>
+        </div>
+        <div class="game-box">
+            <ul class="word-display"></ul>
+            <h4 class="hint-text">Hint: <b></b></h4>
+            <h4 class="guesses-text">Incorrect guesses: <b>0 / 6</b></h4>
+            <div class="keyboard"></div>
+        </div>
+    </div>
+
+    <div class="question-mark" style="position: absolute; bottom: 40px; left: 40px; font-size: 20px; cursor: pointer;" onclick="openGameDescription()">
+        <h1>?</h1>
+    </div>
+
+
+    <!-- Dropdown menu -->
+    <div class="dropdown">
+        <button id="expandButton">☰</button>
+        <div class="dropdown-content">
+            <ul class="menu-links">
+                <li class="nav-link">
+                    <a href="index.html">
+                        <i class='bx bx-home icon' style="font-size: 20px;"></i>
+                        <span class="text nav-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-link">
+                    <a href="calculator.html">
+                        <i class='bx bx-calculator icon' style="font-size: 20px;"></i>
+                        <span class="text nav-text">Calculator</span>
+                    </a>
+                </li>
+                <li class="nav-link">
+                    <a href="cube.html">
+                        <i class='bx bx-cube-alt icon' style="font-size: 20px;"></i>
+                        <span class="text nav-text">3D Cube</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Game Description Overlay -->
+<div class="overlay" id="overlay">
+    <div class="game-description">
+        <div class="close" onclick="closeGameDescription()">Close [X]</div>
+        <h2>How to Play Hangman</h2>
+        <br>
+        <h3>Hangman is a word guessing game. When you start the game, the program will randomly generate a word and display it with blank lines for the missing letters.
+            You will have a limited number of guesses to fill in the blanks and guess the word correctly.</h3>
+        <br>
+        <h3>Hint: The hint below the word is usually vague, so be wise with your choices!</h3>
+        <br>
+        <h3>Guessing a letter: If you guess the wrong letter, the hangman will be drawn one step closer to completion. Once the hangman is complete, you lose the game. If you guess the correct letter, the letter will be displayed in the word.
+        <br>
+            Once a letter is chosen, it cannot be chosen again.
+
+            You continue guessing letters until you have either filled in all the blanks and guessed the word correctly, or you have run out of guesses and have lost the game.</h3>
+        <br>
+        <h2 style="color: red;">Trick or Treat House Rule:</h2>
+        <br>
+        <h3>In true spirit, I've devilishly handed you the first letter for every word. But mwhahha, I haven't disabled the letter, so it's still an option to choose in the game. Be careful, though - the first letter might be one of a kind!</h3>
+        <br>
+        <h3>Happy Halloween!</h3>
+        <!-- Include game instructions, rules, and any other necessary text here -->
+    </div>
+</div>
+
+<script>
+    function openGameDescription() {
+        var overlay = document.getElementById("overlay");
+        overlay.style.display = "block";
+    }
+
+    function closeGameDescription() {
+        var overlay = document.getElementById("overlay");
+        overlay.style.display = "none";
+    }
+</script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const expandButton = document.getElementById("expandButton");
+            const dropdownContent = document.querySelector('.dropdown-content');
+
+            let isOpen = false;
+
+            expandButton.addEventListener("click", function () {
+                isOpen = !isOpen;
+                dropdownContent.style.display = isOpen ? 'block' : 'none';
+            });
+
+            // Prevent the hover effect
+            expandButton.addEventListener("mouseenter", function () {
+                if (!isOpen) {
+                    dropdownContent.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

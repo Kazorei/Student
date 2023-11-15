@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Calculator</title>
+    <!-- Add CSS stylesheet -->
+    <link rel="stylesheet" href="calculator.css">
+
+    <style>
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 40px;
+            background-color: #f1f1f1;
+            border: 3px solid #777;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            color: #333;
+        }
+
+        /* Close button */
+        .popup .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            color: #333;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        /* Popup */
+        .popup-content {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+    <body>
+        <div class="calculator">
+          <input type="text" placeholder="0" id="calc">
+
+          <div>
+            <button class="active">AC</button>
+            <button class="symbol-button active">%</button>
+            <button class="symbol-button-small active">&divide;</button>
+            <button class="del">Del</button>
+          </div>
+          <div>
+            <button>7</button>
+            <button>8</button>
+            <button>9</button>
+            <button class="symbol-button-small active">-</button>
+          </div>
+          <div>
+            <button>4</button>
+            <button>5</button>
+            <button>6</button>
+            <button class="symbol-button-small active">+</button>
+          </div>
+          <div>
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+            <button class="symbol-button-small active">*</button>
+          </div>
+          <div>
+            <button>00</button>
+            <button>0</button>
+            <button class="symbol-button">.</button>
+            <button class="symbol-button-small equal">=</button>
+          </div>
+        </div>
+        <script src="calculator.js"></script>
+
+        <div class="navbar">
+            <ul>
+                <li>
+                    <a href="#">Homepage</a>
+                    <div class="dropdown-content">
+                        <a href="index.html">Dashboard</a>
+                        <a href="cube.html">3D Cube</a>
+                        <a href="hangman.html">Hangman</a>
+                    </div>
+                </li>
+                <li><a href="#" onclick="openAboutPopup()">About</a></li>
+            </ul>
+        </div>
+        <!-- Popup -->
+     <div id="aboutPopup" class="popup">
+        <span class="close" onclick="closeAboutPopup()">&times;</span>
+        <div class="popup-content">
+            <h2>About the Calculator</h2>
+            <p>This calculator is a simple online tool that allows you to perform basic arithmetic operations, such as addition, subtraction, multiplication, and division. It can also be used to calculate percentages .</p>
+            <p><strong>How to use the calculator:</strong></p>
+            <ul>
+                <li>To use the calculator, simply enter the numbers you want to calculate and press the appropriate operation button. For example, to add two numbers, enter the first number, press the plus button (+), enter the second number, and press the equals button (=).</li>
+                <li>To calculate a percentage, enter the number you want to calculate the percentage of, press the percent button (%), enter the percentage, and press the equals button (=).</li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        // Function to open the about popup
+        function openAboutPopup() {
+            var aboutPopup = document.getElementById('aboutPopup');
+            aboutPopup.style.display = 'block';
+        }
+
+        // Function to close the about popup
+        function closeAboutPopup() {
+            var aboutPopup = document.getElementById('aboutPopup');
+            aboutPopup.style.display = 'none';
+        }
+
+        // Function to stop the propagation of click events within the popup
+        function stopPropagation(event) {
+            event.stopPropagation();
+        }
+    </script>
+      </body>
+      </html>
