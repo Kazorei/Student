@@ -67,3 +67,9 @@ With the game rules explained, you've learned about a slight change in mechanics
 Ps. Im very happy with how the house rule plays :) 
 
 Final Thoughts:
+
+I dont have much too say, as i belive Student speak for its self but i would first like to Thank all of CS50x staff for their help and comprehensive lectures throughout my time on CS50x. Thnbak you!
+
+Secondly, it's worth noting that every navigation bar appears different on each of the pages. This is because each program has a separate theme, and I wanted to change it up instead of repeatedly using the same design.
+
+Thirdly, why did I choose three programs? Well, the short answer is that: 1. I wanted to make a calculator program, 2. I love the idea of creating a game (no matter if it's a simple one or a strenuous task), and 3. I remembered a Lex Fridman video about a spinning 3D doughnut, and all the viral videos of the 3D spinning doughnut that surged in popularity a few years ago came to mind. I became obsessed with creating a creative outlet for users to play with, and it grew daily into what it is now: a 3D Cube program!
