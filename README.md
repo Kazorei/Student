@@ -68,7 +68,7 @@ Ps. Im very happy with how the house rule plays :)
 
 Final Thoughts:
 
-I dont have much too say, as i belive Student speak for its self but i would first like to Thank all of CS50x staff for their help and comprehensive lectures throughout my time on CS50x. Thnbak you!
+I dont have much too say, as i belive Student speak for its self but i would first like to Thank all of CS50x staff for their help and comprehensive lectures throughout my time on CS50x. Thank you!
 
 Secondly, it's worth noting that every navigation bar appears different on each of the pages. This is because each program has a separate theme, and I wanted to change it up instead of repeatedly using the same design.
 
